@@ -3,7 +3,7 @@ package internalgrpc
 import (
 	"context"
 
-	"github.com/alexMolokov/otus-rotate-banner/api/pb"
+	"github.com/alexMolokov/rotate-banner-otus/api/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"

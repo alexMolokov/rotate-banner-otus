@@ -3,7 +3,7 @@ package bandit_test
 import (
 	"testing"
 
-	b "github.com/alexMolokov/otus-rotate-banner/internal/algorithm/bandit"
+	b "github.com/alexMolokov/rotate-banner-otus/internal/algorithm/bandit"
 	"github.com/stretchr/testify/require"
 )
 

@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/alexMolokov/otus-rotate-banner/internal/algorithm/bandit"
-	rotatorstorage "github.com/alexMolokov/otus-rotate-banner/internal/storage/rotator"
+	"github.com/alexMolokov/rotate-banner-otus/internal/algorithm/bandit"
+	rotatorstorage "github.com/alexMolokov/rotate-banner-otus/internal/storage/rotator"
 )
 
 type App struct {

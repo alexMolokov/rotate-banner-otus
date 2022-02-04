@@ -1,4 +1,4 @@
-module github.com/alexMolokov/otus-rotate-banner
+module github.com/alexMolokov/rotate-banner-otus
 
 go 1.16
 

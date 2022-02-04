@@ -4,7 +4,7 @@ import (
 	"context"
 	"net"
 
-	"github.com/alexMolokov/otus-rotate-banner/api/pb"
+	"github.com/alexMolokov/rotate-banner-otus/api/pb"
 	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpcValidator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
 	"google.golang.org/grpc"

@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/alexMolokov/otus-rotate-banner/internal/config"
+	"github.com/alexMolokov/rotate-banner-otus/internal/config"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" //nolint
 )

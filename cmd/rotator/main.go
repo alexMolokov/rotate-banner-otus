@@ -9,13 +9,13 @@ import (
 	"syscall"
 	"time"
 
-	approtator "github.com/alexMolokov/otus-rotate-banner/internal/app/rotator"
+	approtator "github.com/alexMolokov/rotate-banner-otus/internal/app/rotator"
 
-	// "github.com/alexMolokov/otus-rotate-banner/internal/app".
-	configApp "github.com/alexMolokov/otus-rotate-banner/internal/config"
-	"github.com/alexMolokov/otus-rotate-banner/internal/logger"
-	internalgrpc "github.com/alexMolokov/otus-rotate-banner/internal/server/grpc"
-	rs "github.com/alexMolokov/otus-rotate-banner/internal/storage/rotator"
+	// "github.com/alexMolokov/rotate-banner-otus/internal/app".
+	configApp "github.com/alexMolokov/rotate-banner-otus/internal/config"
+	"github.com/alexMolokov/rotate-banner-otus/internal/logger"
+	internalgrpc "github.com/alexMolokov/rotate-banner-otus/internal/server/grpc"
+	rs "github.com/alexMolokov/rotate-banner-otus/internal/storage/rotator"
 )
 
 var configFile string

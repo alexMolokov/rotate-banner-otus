@@ -1,7 +1,7 @@
 package logger
 
 import (
-	configApp "github.com/alexMolokov/otus-rotate-banner/internal/config"
+	configApp "github.com/alexMolokov/rotate-banner-otus/internal/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
