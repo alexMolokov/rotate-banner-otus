@@ -12,7 +12,7 @@ services:
   app-rotator:
     build:
       context: ..
-    command: ["./wait-for-postgres.sh", "db", "./bin/rotator"]
+    command: ["./wait-for-postgres.sh", "./bin/rotator"]
     ports:
       - 8086:8086
     depends_on:
@@ -20,12 +20,12 @@ services:
     env_file:
       - database.env
     environment:
-      - DB_HOST=db
+      - POSTGRES_HOST=db
 
   migration:
     build:
       context: ..
-      dockerfile: migrations/Dockerfile
+      dockerfile: ./migrations/Dockerfile
     command: ["./wait-for-postgres.sh", "./entrypoint.sh"]
     depends_on:
       - db
@@ -33,3 +33,10 @@ services:
       - database.env
     environment:
       - POSTGRES_HOST=db
+
+  rabbit:
+    image: rabbitmq:management
+    hostname: rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"

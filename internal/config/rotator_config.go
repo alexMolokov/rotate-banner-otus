@@ -48,7 +48,7 @@ func DefaultRotatorConfig() *RotatorConfig {
 			Name:              "banner",
 			User:              "user",
 			Password:          "pass",
-			MaxConnectionPool: 5,
+			MaxConnectionPool: 4,
 			SslMode:           "disable",
 		},
 		DriverDB: "postgres",

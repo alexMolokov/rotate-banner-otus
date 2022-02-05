@@ -7,14 +7,14 @@ type LoggerConf struct {
 }
 
 type DBConf struct {
-	Driver            string `config:"db-driver"`
-	Host              string `config:"db-host"`
-	Port              int    `config:"db-port"`
-	Name              string `config:"db-name"`
-	User              string `config:"db-user"`
-	Password          string `config:"db-password"`
-	MaxConnectionPool int    `config:"db-maxConnectionPool"`
-	SslMode           string `config:"db-sslMode"`
+	Driver            string `config:"postgres-driver"`
+	Host              string `config:"postgres-host"`
+	Port              int    `config:"postgres-port"`
+	Name              string `config:"postgres-db"`
+	User              string `config:"postgres-user"`
+	Password          string `config:"postgres-password"`
+	MaxConnectionPool int    `config:"postgres-maxConnectionPool"`
+	SslMode           string `config:"postgres-sslMode"`
 }
 
 type GRPCConf struct {
@@ -23,7 +23,13 @@ type GRPCConf struct {
 }
 
 type QueueConf struct {
-	URI          string `config:"queue-uri"`
+	// параметры подключения
+	Host     string `config:"queue-host"`
+	Port     int    `config:"queue-port"`
+	User     string `config:"queue-user"`
+	Password string `config:"queue-password"`
+
+	// параметры очереди
 	Name         string `config:"queue-name"`
 	ExchangeName string `config:"queue-exchangeName"`
 	ExchangeType string `config:"queue-exchangeType"`

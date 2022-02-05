@@ -43,13 +43,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	logger, err := logger.New(&cfg.Logger)
+	lgr, err := logger.New(&cfg.Logger)
 	if err != nil {
-		fmt.Printf("Can't create logger: %v", err)
+		fmt.Printf("Can't create lgr: %v", err)
 		os.Exit(1)
 	}
 
-	fmt.Printf("%#v", cfg.DB)
 	storage := rs.NewRotatorStorage(cfg.DB)
 	err = storage.Connect()
 	if err != nil {
@@ -59,36 +58,39 @@ func main() {
 	defer func() {
 		err = storage.Close()
 		if err != nil {
-			logger.Error("failed to close pool connection to storage: " + err.Error())
+			lgr.Error("failed to close pool connection to storage: " + err.Error())
 		}
 	}()
 
-	app := approtator.NewAppRotator(logger, storage)
+	app := approtator.NewAppRotator(lgr, storage)
 
 	tcpAddr := fmt.Sprintf("%s:%d", cfg.GRPC.Host, cfg.GRPC.Port)
-	grpcServer := internalgrpc.NewServer(logger, app, tcpAddr)
+	grpcServer := internalgrpc.NewServer(lgr, app, tcpAddr)
 
 	ctx, cancel := signal.NotifyContext(context.Background(),
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 	defer cancel()
 
 	go func() {
-		logger.Info("Service GRPC bannerRotator is running...")
+		lgr.Info("Service GRPC bannerRotator is running...")
 
 		if err := grpcServer.Start(); err != nil {
-			logger.Error("failed to start GRPC server: " + err.Error())
+			lgr.Error("failed to start GRPC server: " + err.Error())
 			cancel()
 		}
 	}()
 
 	<-ctx.Done()
 
+	fmt.Println("Graceful shutdown start")
 	ctx, cancel = context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
 
 	if err := grpcServer.Stop(ctx); err != nil {
-		logger.Error("failed to stop GRPC bannerRotator service: " + err.Error())
+		lgr.Error("failed to stop GRPC bannerRotator service: " + err.Error())
 	} else {
-		logger.Info("Service GRPC bannerRotator is stopped")
+		msg := "Service GRPC bannerRotator is stopped"
+		fmt.Println(msg)
+		lgr.Info(msg)
 	}
 }

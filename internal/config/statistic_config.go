@@ -50,7 +50,7 @@ func DefaultSchedulerConfig() *SchedulerConfig {
 			SslMode:           "disable",
 		},
 		Queue: QueueConf{
-			URI:            "amqp://guest:guest@localhost:5672/",
+			// URI:            "amqp://guest:guest@localhost:5672/",
 			Name:           "reminder_events",
 			ExchangeName:   "reminder",
 			ExchangeType:   "direct",
