@@ -57,10 +57,10 @@ func (m *AddBannerToSlotRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetBannerId() < 0 {
+	if m.GetBannerId() < 1 {
 		err := AddBannerToSlotRequestValidationError{
 			field:  "BannerId",
-			reason: "value must be greater than or equal to 0",
+			reason: "value must be greater than or equal to 1",
 		}
 		if !all {
 			return err
@@ -68,10 +68,10 @@ func (m *AddBannerToSlotRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetSlotId() < 0 {
+	if m.GetSlotId() < 1 {
 		err := AddBannerToSlotRequestValidationError{
 			field:  "SlotId",
-			reason: "value must be greater than or equal to 0",
+			reason: "value must be greater than or equal to 1",
 		}
 		if !all {
 			return err
@@ -181,10 +181,10 @@ func (m *RemoveBannerFromSlotRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetBannerId() < 0 {
+	if m.GetBannerId() < 1 {
 		err := RemoveBannerFromSlotRequestValidationError{
 			field:  "BannerId",
-			reason: "value must be greater than or equal to 0",
+			reason: "value must be greater than or equal to 1",
 		}
 		if !all {
 			return err
@@ -192,10 +192,10 @@ func (m *RemoveBannerFromSlotRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetSlotId() < 0 {
+	if m.GetSlotId() < 1 {
 		err := RemoveBannerFromSlotRequestValidationError{
 			field:  "SlotId",
-			reason: "value must be greater than or equal to 0",
+			reason: "value must be greater than or equal to 1",
 		}
 		if !all {
 			return err
@@ -306,10 +306,10 @@ func (m *CountTransitionRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetSlotId() < 0 {
+	if m.GetSlotId() < 1 {
 		err := CountTransitionRequestValidationError{
 			field:  "SlotId",
-			reason: "value must be greater than or equal to 0",
+			reason: "value must be greater than or equal to 1",
 		}
 		if !all {
 			return err
@@ -317,10 +317,10 @@ func (m *CountTransitionRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetBannerId() < 0 {
+	if m.GetBannerId() < 1 {
 		err := CountTransitionRequestValidationError{
 			field:  "BannerId",
-			reason: "value must be greater than or equal to 0",
+			reason: "value must be greater than or equal to 1",
 		}
 		if !all {
 			return err
@@ -328,10 +328,10 @@ func (m *CountTransitionRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetSgId() < 0 {
+	if m.GetSgId() < 1 {
 		err := CountTransitionRequestValidationError{
 			field:  "SgId",
-			reason: "value must be greater than or equal to 0",
+			reason: "value must be greater than or equal to 1",
 		}
 		if !all {
 			return err
@@ -441,10 +441,10 @@ func (m *ChooseBannerRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetSlotId() < 0 {
+	if m.GetSlotId() < 1 {
 		err := ChooseBannerRequestValidationError{
 			field:  "SlotId",
-			reason: "value must be greater than or equal to 0",
+			reason: "value must be greater than or equal to 1",
 		}
 		if !all {
 			return err
@@ -452,10 +452,10 @@ func (m *ChooseBannerRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetSgId() < 0 {
+	if m.GetSgId() < 1 {
 		err := ChooseBannerRequestValidationError{
 			field:  "SgId",
-			reason: "value must be greater than or equal to 0",
+			reason: "value must be greater than or equal to 1",
 		}
 		if !all {
 			return err
