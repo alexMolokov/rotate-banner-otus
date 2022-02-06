@@ -1,5 +1,8 @@
 package approtator
 
+//go:generate mockgen -destination=mock/storage.go -package=mock . Storage
+//go:generate mockgen -destination=mock/logger.go -package=mock . Logger
+
 import (
 	"context"
 	"time"
