@@ -56,7 +56,7 @@ func (a *App) ChooseBanner(ctx context.Context, slotID, sgID int64) (bannerID in
 	}
 
 	bannerID = int64(bandit.Choice(stat, totalDisplay))
-	err = a.Storage.CountTransition(ctx, bannerID, slotID, sgID)
+	err = a.Storage.CountDisplay(ctx, bannerID, slotID, sgID)
 	if err != nil {
 		return 0, err
 	}
