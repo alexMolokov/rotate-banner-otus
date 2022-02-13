@@ -1,8 +1,6 @@
 FROM ubuntu:latest
 
-# install psql
 RUN apt-get update
-RUN apt-get -y install postgresql-client
 
 ADD https://github.com/pressly/goose/releases/download/v2.6.0/goose-linux64 /bin/goose
 RUN chmod +x /bin/goose
@@ -10,6 +8,9 @@ RUN chmod +x /bin/goose
 RUN mkdir -p /migrations
 WORKDIR /migrations
 COPY ./migrations .
-ADD ./deployments/wait-for-postgres.sh .
-RUN chmod +x wait-for-postgres.sh
 RUN chmod +x entrypoint.sh
+
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
+RUN chmod +x /wait
+
+CMD /wait && ./entrypoint.sh
