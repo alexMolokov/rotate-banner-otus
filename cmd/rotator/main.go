@@ -4,14 +4,14 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
-	approtator "github.com/alexMolokov/rotate-banner-otus/internal/app/rotator"
-
-	// "github.com/alexMolokov/rotate-banner-otus/internal/app".
+	"github.com/alexMolokov/rotate-banner-otus/internal/app/rotator"
+	"github.com/alexMolokov/rotate-banner-otus/internal/app/rotator/observer"
 	configApp "github.com/alexMolokov/rotate-banner-otus/internal/config"
 	"github.com/alexMolokov/rotate-banner-otus/internal/logger"
 	internalgrpc "github.com/alexMolokov/rotate-banner-otus/internal/server/grpc"
@@ -52,8 +52,7 @@ func main() {
 	storage := rs.NewRotatorStorage(cfg.DB)
 	err = storage.Connect()
 	if err != nil {
-		fmt.Printf("Can't create pool connect to storage: %v", err)
-		os.Exit(1)
+		log.Fatalf("Can't create pool connect to storage: %v", err)
 	}
 	defer func() {
 		err = storage.Close()
@@ -62,7 +61,15 @@ func main() {
 		}
 	}()
 
+	handler := observer.NewAMQPObserver(cfg.Queue, lgr)
+	err = handler.Init()
+	if err != nil {
+		lgr.Error("Can't init connect rabbit: %v", err)
+	}
+	defer handler.Close()
+
 	app := approtator.NewAppRotator(lgr, storage)
+	app.AddHandler(handler)
 
 	tcpAddr := fmt.Sprintf("%s:%d", cfg.GRPC.Host, cfg.GRPC.Port)
 	grpcServer := internalgrpc.NewServer(lgr, app, tcpAddr)

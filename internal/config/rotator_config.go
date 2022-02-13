@@ -14,6 +14,7 @@ type RotatorConfig struct {
 	DriverDB string `config:"driverDb"`
 	DB       DBConf
 	GRPC     GRPCConf
+	Queue    QueueConf
 }
 
 func NewRotatorConfig(fileName string) (*RotatorConfig, error) {
@@ -55,6 +56,14 @@ func DefaultRotatorConfig() *RotatorConfig {
 		GRPC: GRPCConf{
 			Host: "localhost",
 			Port: 9013,
+		},
+		Queue: QueueConf{
+			Host:         "localhost",
+			Port:         5432,
+			User:         "guest",
+			Password:     "guest",
+			ExchangeName: "rotator",
+			ExchangeType: "direct",
 		},
 	}
 }

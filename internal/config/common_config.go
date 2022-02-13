@@ -30,13 +30,6 @@ type QueueConf struct {
 	Password string `config:"queue-password"`
 
 	// параметры очереди
-	Name         string `config:"queue-name"`
 	ExchangeName string `config:"queue-exchangeName"`
 	ExchangeType string `config:"queue-exchangeType"`
-	// When setting up the channel after a channel exception in seconds
-	ReInitDelay int `config:"queue-reInitDelay"`
-	// When reconnecting to the server after connection failure in seconds
-	ReconnectDelay int `config:"queue-reconnectDelay"`
-	// resending messages the server didn't confirm in seconds
-	ResendDelay int `config:"queue-resendDelay"`
 }
