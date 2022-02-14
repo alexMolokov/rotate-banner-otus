@@ -21,7 +21,8 @@ func TestLogger(t *testing.T) {
 	r, w, _ := os.Pipe()
 	os.Stdout = w
 
-	logger, _ := New(cfg)
+	logger, err := New(cfg)
+	assert.Nil(t, err)
 
 	logger.Error(errorMsg)
 	logger.Info(infoMsg)
