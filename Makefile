@@ -37,6 +37,12 @@ migration:
 migration-reverse:
 	goose -dir=migrations postgres "user=alex_molokov password=alex_molokov dbname=banner sslmode=disable" down
 
+run:
+	docker-compose up -d
+
+stop:
+	docker-compose down
+
 generate:
 	rm -rf api/pb
 	mkdir -p api/pb
