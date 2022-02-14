@@ -40,10 +40,6 @@ func New(c *configApp.LoggerConf) (*Logger, error) {
 	logger := &Logger{
 		zp: loggerZap.Sugar(),
 	}
-	err = logger.zp.Sync()
-	if err != nil {
-		return nil, err
-	}
 
 	return logger, nil
 }
