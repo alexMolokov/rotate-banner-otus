@@ -81,7 +81,7 @@ func (s *AppSuite) Test_ChooseBanner() {
 		{ID: bannerChooseID, Display: 30, Click: 20},
 	}
 
-	s.mockStorage.EXPECT().CountTransition(gomock.Any(), gomock.Any(), slotID, sgID).Times(1).Return(nil)
+	s.mockStorage.EXPECT().CountDisplay(gomock.Any(), gomock.Any(), slotID, sgID).Times(1).Return(nil)
 	s.mockStorage.EXPECT().GetBannersStat(gomock.Any(), slotID, sgID).Times(1).Return(bannerStatChoose, totalDisplay, nil)
 	bannerID, err := s.app.ChooseBanner(context.Background(), slotID, sgID)
 	s.Require().NoError(err)
