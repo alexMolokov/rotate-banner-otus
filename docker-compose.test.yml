@@ -1,0 +1,95 @@
+version: "3.7"
+
+networks:
+  rabbit_test:
+    driver: bridge
+  db_test:
+    driver: bridge
+  app_test:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:9.5
+    restart: always
+    container_name: db_test
+    env_file:
+      - ./envs/database.env
+    environment:
+      - POSTGRES_DB=banner_test
+    expose:
+      - 5432
+    networks:
+      - db_test
+
+  rabbit:
+    image: rabbitmq:management
+    restart: always
+    container_name: rabbit_test
+    expose:
+      - 15672
+      - 5672
+    networks:
+      - rabbit_test
+
+  migration:
+    build:
+      context: .
+      dockerfile: ./migrations/Dockerfile
+    container_name: migrations_test
+    restart: on-failure
+    depends_on:
+      - db
+    env_file:
+      - ./envs/database.env
+    environment:
+      - WAIT_HOSTS=db:5432
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=banner_test
+    networks:
+      - db_test
+
+  app-rotator:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - CONFIG_FILE_NAME=rotator
+    hostname: app
+    container_name: app_test
+    depends_on:
+      - rabbit
+      - db
+    restart: on-failure
+    env_file:
+      - ./envs/database.env
+    environment:
+      - WAIT_HOSTS=db:5432, rabbit:5672
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=banner_test
+    expose:
+      - 8086
+    volumes:
+      - ./log/containers/:/log/
+    networks:
+      - rabbit_test
+      - db_test
+      - app_test
+
+  integration_tests:
+    build:
+      context: .
+      dockerfile: ./tests/Dockerfile
+    env_file:
+      - ./envs/queue.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=banner_test
+      - QUEUE_HOST=rabbit
+      - WAIT_HOSTS=db:5432, rabbit:5672, app:8086
+    depends_on:
+      - app-rotator
+    networks:
+      - rabbit_test
+      - db_test
+      - app_test

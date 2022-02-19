@@ -1,0 +1,75 @@
+version: "3.7"
+
+networks:
+  rabbit:
+    driver: bridge
+  db:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:9.5
+    restart: always
+    container_name: postgres-rotate-banner
+    env_file:
+      - ./envs/database.env
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    networks:
+      - db
+
+  rabbit:
+    image: rabbitmq:management
+    restart: always
+    container_name: rabbit-rotate-banner
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - 15672
+    networks:
+      - rabbit
+
+  migration:
+    build:
+      context: .
+      dockerfile: ./migrations/Dockerfile
+    container_name: migrations-rotate-banner
+    restart: on-failure
+    depends_on:
+      - db
+    env_file:
+      - ./envs/database.env
+    environment:
+      - WAIT_HOSTS=db:5432
+      - POSTGRES_HOST=db
+    networks:
+      - db
+
+  app-rotator:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - CONFIG_FILE_NAME=rotator
+    container_name: app-rotate-banner
+    depends_on:
+      - rabbit
+      - db
+    restart: on-failure
+    environment:
+      - WAIT_HOSTS=db:5432, rabbit:5672
+      - POSTGRES_HOST=db
+    env_file:
+      - ./envs/database.env
+    ports:
+      - "8086:8086"
+    expose:
+      - 8086
+    volumes:
+      - ./log/containers/:/log/
+    networks:
+      - rabbit
+      - db
