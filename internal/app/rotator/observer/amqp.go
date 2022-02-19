@@ -106,5 +106,5 @@ func (a *AMQPObserver) Handle(em approtator.EventMessage) {
 }
 
 func (a *AMQPObserver) getURI() string {
-	return "amqp://" + a.cfg.User + ":" + a.cfg.Password + "@" + a.cfg.Host + ":" + string(rune(a.cfg.Port))
+	return fmt.Sprintf("amqp://%s:%s@%s:%d", a.cfg.User, a.cfg.Password, a.cfg.Host, a.cfg.Port)
 }

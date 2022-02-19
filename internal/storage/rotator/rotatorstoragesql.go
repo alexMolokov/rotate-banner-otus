@@ -20,14 +20,14 @@ var (
 )
 
 type Banner struct {
-	ID           int64  `db:"banner_id"`
-	Description  string `db:"description"`
-	TotalDisplay int64  `db:"total_display"`
+	ID          int64  `db:"banner_id"`
+	Description string `db:"description"`
 }
 
 type Slot struct {
-	ID          int64  `db:"slot_id"`
-	Description string `db:"description"`
+	ID           int64  `db:"slot_id"`
+	Description  string `db:"description"`
+	TotalDisplay int64  `db:"total_display"`
 }
 
 type SocialGroup struct {
@@ -78,7 +78,7 @@ func (s *Storage) Close() error {
 
 func (s *Storage) GetBannerByID(ctx context.Context, bannerID int64) (*Banner, error) {
 	row := s.db.QueryRowxContext(ctx,
-		"SELECT banner_id, description, total_display FROM banner WHERE banner_id = $1",
+		"SELECT banner_id, description FROM banner WHERE banner_id = $1",
 		bannerID)
 	if err := row.Err(); err != nil {
 		return nil, fmt.Errorf("can't get banner %d: %w", bannerID, err)

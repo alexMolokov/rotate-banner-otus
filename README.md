@@ -24,6 +24,8 @@
 `make lint`
 ## Запуск unit тестов
 `make test`
+## Запуск интеграционных тестов
+`make integration-tests`
 ## Для генерации grpc сервиса можно использовать команду
 `make generate`
 

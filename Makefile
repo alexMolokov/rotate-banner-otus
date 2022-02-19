@@ -23,7 +23,7 @@ version: build
 	$(BIN) version
 
 test:
-	go test -v -race -count=100 -timeout=1m ./...
+	go test -v -race -count=100 -timeout=1m ./internal/...
 
 install-lint-deps:
 	(which golangci-lint > /dev/null) || curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell go env GOPATH)/bin v1.41.1
@@ -70,3 +70,11 @@ generate:
     --validate_out="lang=go:api/pb" \
      --proto_path=api/ \
     api/RotatorService.proto
+
+integration-tests:
+	set -e ;\
+	docker-compose -f docker-compose.test.yml -p banner-rotation-integration-tests up --build -d;\
+	code=0 ;\
+	docker-compose -f docker-compose.test.yml -p banner-rotation-integration-tests run integration_tests go test -v ./tests/... || code=$$? ;\
+	docker-compose -f docker-compose.test.yml -p banner-rotation-integration-tests down ;\
+	exit $$code ;
