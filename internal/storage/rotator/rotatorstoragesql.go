@@ -213,7 +213,7 @@ func (s *Storage) RemoveBannerFromSlot(ctx context.Context, bannerID, slotID int
 // CountTransition Регистрирует переход (клик на баннере).
 func (s *Storage) CountTransition(ctx context.Context, bannerID, slotID, sgID int64) error {
 	query := `UPDATE stat SET click = click + 1
-		WHERE slot_id = $1 AND banner_id = $2 AND sg_id = $3`
+		WHERE slot_id = $1 AND banner_id = $2 AND social_group_id = $3`
 
 	result, err := s.db.ExecContext(ctx, query, bannerID, slotID, sgID)
 	if err != nil {
@@ -241,7 +241,7 @@ func (s *Storage) CountDisplay(ctx context.Context, bannerID, slotID, sgID int64
 	defer tx.Rollback()
 
 	query := `UPDATE stat SET display = display + 1
-		WHERE slot_id = $1 AND banner_id = $2 AND sg_id = $3`
+		WHERE slot_id = $1 AND banner_id = $2 AND social_group_id = $3`
 
 	_, err = tx.ExecContext(ctx, query, bannerID, slotID, sgID)
 	if err != nil {
