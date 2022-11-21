@@ -7,14 +7,14 @@ type LoggerConf struct {
 }
 
 type DBConf struct {
-	Driver            string `config:"db-driver"`
-	Host              string `config:"db-host"`
-	Port              int    `config:"db-port"`
-	Name              string `config:"db-name"`
-	User              string `config:"db-user"`
-	Password          string `config:"db-password"`
-	MaxConnectionPool int    `config:"db-maxConnectionPool"`
-	SslMode           string `config:"db-sslMode"`
+	Driver            string `config:"postgres-driver"`
+	Host              string `config:"postgres-host"`
+	Port              int    `config:"postgres-port"`
+	Name              string `config:"postgres-db"`
+	User              string `config:"postgres-user"`
+	Password          string `config:"postgres-password"`
+	MaxConnectionPool int    `config:"postgres-maxConnectionPool"`
+	SslMode           string `config:"postgres-sslMode"`
 }
 
 type GRPCConf struct {
@@ -23,14 +23,13 @@ type GRPCConf struct {
 }
 
 type QueueConf struct {
-	URI          string `config:"queue-uri"`
-	Name         string `config:"queue-name"`
+	// параметры подключения
+	Host     string `config:"queue-host"`
+	Port     int    `config:"queue-port"`
+	User     string `config:"queue-user"`
+	Password string `config:"queue-password"`
+
+	// параметры очереди
 	ExchangeName string `config:"queue-exchangeName"`
 	ExchangeType string `config:"queue-exchangeType"`
-	// When setting up the channel after a channel exception in seconds
-	ReInitDelay int `config:"queue-reInitDelay"`
-	// When reconnecting to the server after connection failure in seconds
-	ReconnectDelay int `config:"queue-reconnectDelay"`
-	// resending messages the server didn't confirm in seconds
-	ResendDelay int `config:"queue-resendDelay"`
 }

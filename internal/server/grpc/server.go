@@ -10,7 +10,9 @@ import (
 	"google.golang.org/grpc"
 )
 
-//go:generate mockgen -destination=grpc/mock_test.go -package=internalgrpc -source=server.go
+//go:generate mockgen -destination=mock/app.go -package=mock . Application
+//go:generate mockgen -destination=mock/logger.go -package=mock . Logger
+
 type Application interface {
 	AddBannerToSlot(ctx context.Context, bannerID, slotID int64) error
 	RemoveBannerFromSlot(ctx context.Context, bannerID, slotID int64) error

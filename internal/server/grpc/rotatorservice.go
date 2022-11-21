@@ -22,7 +22,7 @@ func (rs *RotatorService) AddBannerToSlot(ctx context.Context, r *pb.AddBannerTo
 		rs.logger.Error("can't add banner to slot bannerId=%d slotId=%d %v", r.BannerId, r.SlotId, err)
 		return nil, status.Errorf(codes.Internal, "can't add banner to slot")
 	}
-	return nil, nil
+	return &emptypb.Empty{}, nil
 }
 
 func (rs *RotatorService) RemoveBannerFromSlot(ctx context.Context, r *pb.RemoveBannerFromSlotRequest) (*emptypb.Empty, error) { //nolint
@@ -32,7 +32,7 @@ func (rs *RotatorService) RemoveBannerFromSlot(ctx context.Context, r *pb.Remove
 		return nil, status.Errorf(codes.Internal, "can't remove banner from slot")
 	}
 
-	return nil, nil
+	return &emptypb.Empty{}, nil
 }
 
 func (rs *RotatorService) CountTransition(ctx context.Context, r *pb.CountTransitionRequest) (*emptypb.Empty, error) {
@@ -42,7 +42,7 @@ func (rs *RotatorService) CountTransition(ctx context.Context, r *pb.CountTransi
 		return nil, status.Errorf(codes.Internal, "can't count the transition")
 	}
 
-	return nil, nil
+	return &emptypb.Empty{}, nil
 }
 
 func (rs *RotatorService) ChooseBanner(ctx context.Context, r *pb.ChooseBannerRequest) (*pb.ChooseBannerResponse, error) { //nolint

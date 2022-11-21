@@ -1,5 +1,8 @@
 package approtator
 
+//go:generate mockgen -destination=mock/storage.go -package=mock . Storage
+//go:generate mockgen -destination=mock/logger.go -package=mock . Logger
+
 import (
 	"context"
 	"time"
@@ -8,9 +11,27 @@ import (
 	rotatorstorage "github.com/alexMolokov/rotate-banner-otus/internal/storage/rotator"
 )
 
+const (
+	EventBannerDisplay    = "display"
+	EventBannerTransition = "transition"
+)
+
+type EventMessage struct {
+	Type     string
+	SlotID   int64
+	BannerID int64
+	SgID     int64
+	Date     string
+}
+
+type EventHandler interface {
+	Handle(message EventMessage)
+}
+
 type App struct {
-	Logger  Logger
-	Storage Storage
+	Logger   Logger
+	Storage  Storage
+	handlers []EventHandler
 }
 
 func (a *App) AddBannerToSlot(ctx context.Context, bannerID, slotID int64) error {
@@ -31,7 +52,20 @@ func (a *App) CountTransition(ctx context.Context, bannerID, slotID, sgID int64)
 	opCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
 
-	return a.Storage.CountTransition(opCtx, bannerID, slotID, sgID)
+	err := a.Storage.CountTransition(opCtx, bannerID, slotID, sgID)
+	if err != nil {
+		return err
+	}
+
+	a.event(EventMessage{
+		Type:     EventBannerTransition,
+		SlotID:   slotID,
+		BannerID: bannerID,
+		SgID:     sgID,
+		Date:     time.Now().String(),
+	})
+
+	return nil
 }
 
 func (a *App) ChooseBanner(ctx context.Context, slotID, sgID int64) (bannerID int64, err error) {
@@ -53,12 +87,30 @@ func (a *App) ChooseBanner(ctx context.Context, slotID, sgID int64) (bannerID in
 	}
 
 	bannerID = int64(bandit.Choice(stat, totalDisplay))
-	err = a.Storage.CountTransition(ctx, bannerID, slotID, sgID)
+	err = a.Storage.CountDisplay(ctx, bannerID, slotID, sgID)
 	if err != nil {
 		return 0, err
 	}
 
+	a.event(EventMessage{
+		Type:     EventBannerDisplay,
+		SlotID:   slotID,
+		BannerID: bannerID,
+		SgID:     sgID,
+		Date:     time.Now().String(),
+	})
+
 	return bannerID, nil
+}
+
+func (a *App) AddHandler(handler EventHandler) {
+	a.handlers = append(a.handlers, handler)
+}
+
+func (a *App) event(e EventMessage) {
+	for _, h := range a.handlers {
+		go h.Handle(e)
+	}
 }
 
 type Logger interface {

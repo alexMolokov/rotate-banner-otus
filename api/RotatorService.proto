@@ -9,24 +9,24 @@ import "validate/validate.proto";
 
 
 message AddBannerToSlotRequest {
-  int64 banner_id = 1 [(validate.rules).int64 = {gte: 0}]; // ID баннера
-  int64 slot_id = 2 [(validate.rules).int64 = {gte: 0}]; // ID слота
+  int64 banner_id = 1 [(validate.rules).int64 = {gte: 1}]; // ID баннера
+  int64 slot_id = 2 [(validate.rules).int64 = {gte: 1}]; // ID слота
 }
 
 message RemoveBannerFromSlotRequest {
-  int64 banner_id = 1 [(validate.rules).int64 = {gte: 0}];
-  int64 slot_id = 2 [(validate.rules).int64 = {gte: 0}];
+  int64 banner_id = 1 [(validate.rules).int64 = {gte: 1}];
+  int64 slot_id = 2 [(validate.rules).int64 = {gte: 1}];
 }
 
 message CountTransitionRequest {
-  int64 slot_id = 1 [(validate.rules).int64 = {gte: 0}]; // ID слота
-  int64 banner_id = 2  [(validate.rules).int64 = {gte: 0}]; // ID баннера
-  int64 sg_id = 3 [(validate.rules).int64 = {gte: 0}]; // Соц. группа
+  int64 slot_id = 1 [(validate.rules).int64 = {gte: 1}]; // ID слота
+  int64 banner_id = 2  [(validate.rules).int64 = {gte: 1}]; // ID баннера
+  int64 sg_id = 3 [(validate.rules).int64 = {gte: 1}]; // Соц. группа
 }
 
 message ChooseBannerRequest {
-  int64 slot_id = 1 [(validate.rules).int64 = {gte: 0}];
-  int64 sg_id = 2 [(validate.rules).int64 = {gte: 0}];
+  int64 slot_id = 1 [(validate.rules).int64 = {gte: 1}];
+  int64 sg_id = 2 [(validate.rules).int64 = {gte: 1}];
 }
 
 message ChooseBannerResponse {

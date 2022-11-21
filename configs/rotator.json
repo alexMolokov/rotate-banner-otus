@@ -5,10 +5,6 @@
     "output": "./log/log_rotator.json"
   },
   "driverDb": "postgres",
-  "grpc": {
-    "host": "localhost",
-    "port": 8086
-  },
   "db": {
     "driver": "postgres",
     "host": "localhost",
@@ -16,7 +12,17 @@
     "name": "banner",
     "user": "alex_molokov",
     "password": "alex_molokov",
-    "maxConnectionPool": 4,
-    "SslMode": "disable"
+    "SslMode": "disable",
+    "maxConnectionPool": 4
+  },
+  "grpc": {
+    "host": "localhost",
+    "port": 8086
+  },
+  "queue": {
+    "host": "localhost",
+    "port": 5672,
+    "user": "guest",
+    "password": "guest"
   }
 }

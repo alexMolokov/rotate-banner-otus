@@ -20,14 +20,14 @@ var (
 )
 
 type Banner struct {
-	ID           int64  `db:"banner_id"`
-	Description  string `db:"description"`
-	TotalDisplay int64  `db:"total_display"`
+	ID          int64  `db:"banner_id"`
+	Description string `db:"description"`
 }
 
 type Slot struct {
-	ID          int64  `db:"slot_id"`
-	Description string `db:"description"`
+	ID           int64  `db:"slot_id"`
+	Description  string `db:"description"`
+	TotalDisplay int64  `db:"total_display"`
 }
 
 type SocialGroup struct {
@@ -78,7 +78,7 @@ func (s *Storage) Close() error {
 
 func (s *Storage) GetBannerByID(ctx context.Context, bannerID int64) (*Banner, error) {
 	row := s.db.QueryRowxContext(ctx,
-		"SELECT banner_id, description, total_display FROM banner WHERE banner_id = $1",
+		"SELECT banner_id, description FROM banner WHERE banner_id = $1",
 		bannerID)
 	if err := row.Err(); err != nil {
 		return nil, fmt.Errorf("can't get banner %d: %w", bannerID, err)
@@ -213,7 +213,7 @@ func (s *Storage) RemoveBannerFromSlot(ctx context.Context, bannerID, slotID int
 // CountTransition Регистрирует переход (клик на баннере).
 func (s *Storage) CountTransition(ctx context.Context, bannerID, slotID, sgID int64) error {
 	query := `UPDATE stat SET click = click + 1
-		WHERE slot_id = $1 AND banner_id = $2 AND sg_id = $3`
+		WHERE slot_id = $1 AND banner_id = $2 AND social_group_id = $3`
 
 	result, err := s.db.ExecContext(ctx, query, bannerID, slotID, sgID)
 	if err != nil {
@@ -241,7 +241,7 @@ func (s *Storage) CountDisplay(ctx context.Context, bannerID, slotID, sgID int64
 	defer tx.Rollback()
 
 	query := `UPDATE stat SET display = display + 1
-		WHERE slot_id = $1 AND banner_id = $2 AND sg_id = $3`
+		WHERE slot_id = $1 AND banner_id = $2 AND social_group_id = $3`
 
 	_, err = tx.ExecContext(ctx, query, bannerID, slotID, sgID)
 	if err != nil {
